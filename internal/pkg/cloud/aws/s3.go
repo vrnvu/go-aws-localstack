@@ -99,17 +99,17 @@ func (s S3) DownloadObject(ctx context.Context, bucket string, fileName string, 
 }
 
 // Deletes an existing object from a bucket.
-func (s S3) DeleteObject(ctx context.Context, bucket string, fileName string) error {
+func (s S3) DeleteObject(ctx context.Context, bucket string, key string) error {
 	if _, err := s.client.DeleteObjectWithContext(ctx, &s3.DeleteObjectInput{
 		Bucket: aws.String(bucket),
-		Key:    aws.String(fileName),
+		Key:    aws.String(key),
 	}); err != nil {
 		return fmt.Errorf("delete: %w", err)
 	}
 
 	if err := s.client.WaitUntilObjectNotExists(&s3.HeadObjectInput{
 		Bucket: aws.String(bucket),
-		Key:    aws.String(fileName),
+		Key:    aws.String(key),
 	}); err != nil {
 		return fmt.Errorf("delete: %w", err)
 	}
