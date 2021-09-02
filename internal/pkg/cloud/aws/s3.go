@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -37,6 +38,13 @@ func NewS3(session *session.Session, timeout time.Duration) S3 {
 func (s S3) Create(ctx context.Context, bucket string) error {
 	ctx, cancel := context.WithTimeout(ctx, s.timeout)
 	defer cancel()
+
+	if _, err := s.client.HeadBucketWithContext(ctx, &s3.HeadBucketInput{
+		Bucket: aws.String(bucket),
+	}); err == nil {
+		log.Printf("create: bucket %v already exists\n", bucket)
+		return nil
+	}
 
 	_, err := s.client.CreateBucketWithContext(ctx, &s3.CreateBucketInput{
 		Bucket: aws.String(bucket),
