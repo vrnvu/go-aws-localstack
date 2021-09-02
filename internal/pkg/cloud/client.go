@@ -1,6 +1,9 @@
 package cloud
 
-import "context"
+import (
+	"context"
+	"io"
+)
 
 type MessageClient interface {
 	// Creates a new long polling queue and returns its URL.
@@ -15,4 +18,17 @@ type MessageClient interface {
 	Receive(ctx context.Context, queueURL string) (*Message, error)
 	// Deletes a message from a queue.
 	Delete(ctx context.Context, queueURL, rcvHandle string) error
+}
+
+type BucketClient interface {
+	// Creates a new bucket.
+	Create(ctx context.Context, bucket string) error
+	// Upload a new object to a bucket and returns its URL to view/download.
+	UploadObject(ctx context.Context, bucket, fileName string, body io.Reader) (string, error)
+	// Downloads an existing object from a bucket.
+	DownloadObject(ctx context.Context, bucket, fileName string, body io.WriterAt) error
+	// Deletes an existing object from a bucket.
+	DeleteObject(ctx context.Context, bucket, fileName string) error
+	// Lists all objects in a bucket.
+	ListObjects(ctx context.Context, bucket string) ([]*Object, error)
 }

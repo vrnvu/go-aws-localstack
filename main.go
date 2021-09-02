@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
+	"github.com/vrnvu/go-aws-localstack/internal/bucket"
 	"github.com/vrnvu/go-aws-localstack/internal/message"
 	"github.com/vrnvu/go-aws-localstack/internal/pkg/cloud/aws"
 )
@@ -21,6 +23,11 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	// Test message
+	fmt.Println("test: SQS")
+	// Test message using SQS
 	message.Message(aws.NewSQS(ses, time.Second*5))
+
+	fmt.Println("test: s3")
+	// Test bucket using S3
+	bucket.Bucket(aws.NewS3(ses, time.Second*5))
 }

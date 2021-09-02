@@ -1,5 +1,7 @@
 package cloud
 
+import "time"
+
 type SendRequest struct {
 	QueueURL   string
 	Body       string
@@ -17,4 +19,10 @@ type Message struct {
 	ReceiptHandle string
 	Body          string
 	Attributes    map[string]string
+}
+
+type Object struct {
+	Key        string
+	Size       int64
+	ModifiedAt time.Time
 }
