@@ -26,3 +26,14 @@ type Object struct {
 	Size       int64
 	ModifiedAt time.Time
 }
+
+type Topic struct {
+	ARN string
+}
+
+type Subscription struct {
+	ARN      string
+	TopicARN string
+	Endpoint string
+	Protocol string
+}

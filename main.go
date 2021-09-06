@@ -8,6 +8,7 @@ import (
 	"github.com/vrnvu/go-aws-localstack/internal/bucket"
 	"github.com/vrnvu/go-aws-localstack/internal/message"
 	"github.com/vrnvu/go-aws-localstack/internal/pkg/cloud/aws"
+	"github.com/vrnvu/go-aws-localstack/internal/pubsub"
 )
 
 func main() {
@@ -30,4 +31,8 @@ func main() {
 	fmt.Println("test: s3")
 	// Test bucket using S3
 	bucket.Bucket(aws.NewS3(ses, time.Second*5))
+
+	fmt.Println("test: pubsub")
+	// Test pubsub using SNS
+	pubsub.PubSub(aws.NewSNS(ses, time.Second*5))
 }
